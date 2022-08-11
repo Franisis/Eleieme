@@ -28,9 +28,15 @@ TT_JUMPTO = "TT_JUMPTO"
 TT_VEER = "TT_VEER"
 TT_GET = "TT_GET"
 TT_POP = "TT_POP"
-
+TT_CANWALK = "TT_CANWALK"
+TT_RIGHTCOR = "TT_RIGHTCOR"
+TT_LEFTCOR = "TT_LEFTCOR"
+TT_EQUALS = "TT_EQUALS"
+TT_DO = "TT_DO"
+TT_GORP = "TT_GORP"
+TT_VAR = "TT_VAR"
 #########################################
-alfabet=[]
+alfabet=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
 #########################################
 
 class Token:
@@ -61,57 +67,71 @@ class Lexer:
         while self.current_char !=None:
             if self.current_char in '\t':
                 self.advance()
-            elif self.current_char == "r":
+            elif self.current_char == "r" and word == "":
                 word+="r"
                 self.advance()
-            elif self.current_char == "i":
+            elif self.current_char == "i" and word == "r":
                 word+="i"
                 self.advance()
-            elif self.current_char == "g":
+            elif self.current_char == "g" and word == "ri":
                 word+="g"
                 self.advance()
-            elif self.current_char == "h":
+            elif self.current_char == "h" and word == "rig":
                 word+="h"
                 self.advance()
-            elif self.current_char == "t":
+            elif self.current_char == "t" and word == "righ":
                 word+="t"
                 self.advance()
             
             if self.current_char == 'l':
                 word+='l'
                 self.advance()
-            elif self.current_char == 'e':
+            elif self.current_char == 'e' and word == "l":
                 word+='e'
                 self.advance()
-            elif self.current_char == 'f':
+            elif self.current_char == 'f' and word == "le":
                 word+='f'
                 self.advance()
-            elif self.current_char == 't':
+            elif self.current_char == 't' and word == "lef":
                 word+='t'
                 self.advance()
-            
-        if word == 'right':
-            tokens.append(TT_RIGHT)
-            word=''
-        elif word == 'left':
-            tokens.append(TT_LEFT)
-            word =''
-        elif word == '':
-            tokens.append(TT_BLOCKED)
-            word = ''
-        else:
-            char = self.current_char
-            self.advance()
-            return [], IllegalCharError("'"+ char + "'")
 
-        return tokens
-    
+            if self.current_char == 'v':
+                word+=self.current_char
+                self.advance()
+            elif self.current_char == 'a' and word == "v":
+                word+=self.current_char
+                self.advance()
+            elif self.current_char == "r" and word == "va":
+                word+=self.current_char
+                self.advance()
+
+            if word == 'right':
+                tokens.append(TT_RIGHT)
+                word=''
+            elif word == 'left':
+                tokens.append(TT_LEFT)
+                word =''
+            elif word == 'var':
+                tokens.append(TT_VAR)
+                word =''
+            elif word == "GORP":
+                tokens.append(TT_GORP)
+                break
+            else:
+                char = self.current_char
+                self.advance()
+                return [], IllegalCharError("'"+ char + "'")
+
+            return tokens
+        
 
     def make_vars(self):
         var_str = ''
         dot_count=0
         while self.current_char != None and self.current_char in alfabet:
-            pass 
+            var_str += self.current_char()
+
 
 
 class Error:
