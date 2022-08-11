@@ -21,6 +21,14 @@ TT_PROC = "TT_PROC"
 TT_GO = "TT_GO"
 TT_PUT = "TT_PUT"
 TT_GORP = "TT_GORP"
+TT_LOOK = "TT_LOOK"
+TT_GRAB = "TT_GRAB"
+TT_JUMP = "TT_JUMP"
+TT_JUMPTO = "TT_JUMPTO"
+TT_VEER = "TT_VEER"
+TT_GET = "TT_GET"
+TT_POP = "TT_POP"
+
 #########################################
 alfabet=[]
 #########################################
