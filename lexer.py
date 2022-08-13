@@ -35,6 +35,7 @@ TT_EQUALS = "TT_EQUALS"
 TT_DO = "TT_DO"
 TT_GORP = "TT_GORP"
 TT_VAR = "TT_VAR"
+TT_PROG = 'TT_PROG'
 #########################################
 alfabet=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
 #########################################
@@ -64,6 +65,10 @@ class Lexer:
     def make_tokens(self):
         tokens = []
         word = ''
+        RPARENS=0
+        LPARENS=0
+        LCOR=0
+        RCOR=0
         while self.current_char !=None:
             if self.current_char in '\t':
                 self.advance()
@@ -105,6 +110,44 @@ class Lexer:
             elif self.current_char == "r" and word == "va":
                 word+=self.current_char
                 self.advance()
+            
+            if self.current_char == 'P':
+                word+=self.current_char
+                self.advance()
+            elif self.current_char == 'R' and word == "P":
+                word+=self.current_char
+                self.advance()
+            elif self.current_char == "O" and word == "PR":
+                word+=self.current_char
+                self.advance()
+            elif self.current_char == "G" and word == "PRO":
+                word+=self.current_char
+                self.advance()
+            
+            if self.current_char() == '(':
+                LPARENS+=1
+                self.advance()
+            elif self.current_char() == ')':
+                RPARENS+=1
+                self.advance()
+
+            if self.current_char()=='{':
+                LCOR+=1
+                self.advance()
+            elif self.current_char()=='}':
+                RCOR+=1
+                self.advance()
+            
+            if LPARENS+RPARENS%2==0:
+                self.advance()
+            else: 
+                return [], IllegalCharError("'"+ char + "'")
+            
+            if LCOR+RCOR%2==0:
+                self.advance()
+            else: 
+                return [], IllegalCharError("'"+ char + "'")
+
 
             if word == 'right':
                 tokens.append(TT_RIGHT)
@@ -118,6 +161,8 @@ class Lexer:
             elif word == "GORP":
                 tokens.append(TT_GORP)
                 break
+            elif word == "PROG":
+                tokens.append()
             else:
                 char = self.current_char
                 self.advance()
