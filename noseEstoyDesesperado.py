@@ -56,6 +56,15 @@ def read_AF(t):
     if word != '':
         print("I don't get it")
         isGood =False
+    if t[i] == '=':
+        print("Is var?")
+        try:
+            if t[i-1] in "abcdedfghijklmnopqrstuvwxyz" and t[i-1] not in "!#$%&/()=?¡¿'"  : 
+                print('is var')
+                isGood=True
+        except:
+            print('Is not var')
+            return False,keyCount,parenCount
     return isGood, keyCount,parenCount
             
 
